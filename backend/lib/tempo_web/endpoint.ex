@@ -12,7 +12,7 @@ defmodule TempoWeb.Endpoint do
     at: "/",
     from: :tempo,
     gzip: false,
-    only: TempoWeb.static_paths()
+    only: ~w(assets fonts images favicon.ico robots.txt)
 
   if code_reloading? do
     plug Phoenix.CodeReloader
