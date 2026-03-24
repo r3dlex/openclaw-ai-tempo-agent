@@ -1,84 +1,96 @@
 # API.md - Phoenix API Endpoints
 
 > HTTP API served by the Elixir/Phoenix backend on port 4000.
+> All endpoints are under `/api/v1/`.
 
-## Endpoints
+## Health Check
 
-### GET /api/analytics
+### GET /api/v1/health
 
-Returns aggregated analytics across all AI tools.
-
-**Response:**
-
-```json
-{
-  "total_sessions": 142,
-  "by_tool": {
-    "copilot": { "sessions": 68, "active_users": 12 },
-    "claude": { "sessions": 45, "active_users": 8 },
-    "augment": { "sessions": 29, "active_users": 5 }
-  },
-  "period": {
-    "start": "2026-03-17T00:00:00Z",
-    "end": "2026-03-24T00:00:00Z"
-  },
-  "generated_at": "2026-03-24T10:30:00Z"
-}
-```
-
-**Query parameters:**
-
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| `period` | string | `week` | Time period: `day`, `week`, `month` |
-| `tool` | string | all | Filter by tool: `copilot`, `claude`, `augment` |
-
-### GET /api/users
-
-Returns user activity data.
-
-**Response:**
-
-```json
-{
-  "users": [
-    {
-      "id": "user_001",
-      "display_name": "Alice",
-      "total_sessions": 34,
-      "last_active": "2026-03-24T09:15:00Z",
-      "tools_used": ["copilot", "claude"]
-    }
-  ],
-  "total": 15,
-  "generated_at": "2026-03-24T10:30:00Z"
-}
-```
-
-**Query parameters:**
-
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| `sort` | string | `total_sessions` | Sort field: `total_sessions`, `last_active`, `display_name` |
-| `order` | string | `desc` | Sort order: `asc`, `desc` |
-| `limit` | integer | 50 | Max results (1-100) |
-
-### GET /status
-
-Health check endpoint. Returns backend status and data freshness.
-
-**Response:**
+Returns backend status.
 
 ```json
 {
   "status": "ok",
-  "uptime_seconds": 3600,
-  "data_sources": {
-    "augment": { "records": 120, "last_updated": "2026-03-24T08:00:00Z" },
-    "copilot": { "records": 340, "last_updated": "2026-03-24T08:00:00Z" },
-    "claude": { "records": 210, "last_updated": "2026-03-24T08:00:00Z" }
-  },
-  "iamq_connected": true
+  "service": "tempo",
+  "version": "0.1.0"
+}
+```
+
+## Analytics Endpoints
+
+All analytics endpoints are scoped by data source. Currently supported: `augment`.
+
+### GET /api/v1/analytics/sources
+
+Lists available data sources.
+
+```json
+{
+  "sources": ["augment"]
+}
+```
+
+### GET /api/v1/analytics/:source/summary
+
+Returns high-level summary metrics for a data source.
+
+```json
+{
+  "source": "augment",
+  "total_credits": 4523891,
+  "total_users": 45,
+  "active_users": 42,
+  "days_tracked": 59,
+  "average_credits_per_user": 100530.91
+}
+```
+
+### GET /api/v1/analytics/:source/users
+
+Returns per-user statistics, sorted by total credits descending.
+
+```json
+{
+  "source": "augment",
+  "users": [
+    {
+      "email": "alice@example.com",
+      "total_credits": 542310,
+      "average_daily": 10846.2,
+      "days_active": 50,
+      "last_active": "2026-01-21"
+    }
+  ]
+}
+```
+
+### GET /api/v1/analytics/:source/daily
+
+Returns daily aggregate statistics, sorted chronologically.
+
+```json
+{
+  "source": "augment",
+  "daily": [
+    {
+      "date": "2025-11-24",
+      "total_credits": 234567,
+      "user_count": 38
+    }
+  ]
+}
+```
+
+### GET /api/v1/analytics/:source/raw
+
+Returns raw data points (limited to first 100 records).
+
+```json
+{
+  "source": "augment",
+  "count": 2134,
+  "data": [...]
 }
 ```
 
@@ -88,20 +100,20 @@ All endpoints return errors in a consistent format:
 
 ```json
 {
-  "error": "invalid_parameter",
-  "message": "Unknown tool: foo. Valid values: copilot, claude, augment"
+  "error": "unsupported source"
 }
 ```
 
 | HTTP Status | Meaning |
 |-------------|---------|
 | 200 | Success |
-| 400 | Invalid query parameter |
+| 400 | Invalid source or parameter |
 | 500 | Internal server error |
 
 ## CORS
 
-The API allows requests from the dashboard origin (configurable via `DASHBOARD_URL` env var, default `http://localhost:5173`).
+The API allows requests from `http://localhost:4200` (Angular dev) and `http://localhost:4000`.
+In production, nginx handles the proxy so CORS is not needed.
 
 ## Related
 

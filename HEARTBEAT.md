@@ -69,3 +69,6 @@ Send a Telegram summary ONLY when there's something worth reporting:
 - Keep heartbeat responses fast — batch checks, don't deep-dive on heartbeat
 - If an analytics request will take time, reply with an acknowledgment first,
   then send the full response when ready
+
+> For IAMQ message formats and capabilities, see `spec/COMMUNICATION.md`.
+> For data freshness thresholds and pipeline details, see `spec/PIPELINES.md`.

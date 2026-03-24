@@ -1,3 +1,4 @@
+# Elixir
 /_build
 /cover
 /deps
@@ -8,3 +9,49 @@ erl_crash.dump
 *.beam
 /config/*.secret.exs
 .elixir_ls/
+backend/_build/
+backend/deps/
+backend/cover/
+backend/.elixir_ls/
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.angular/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.venv/
+pipelines/.venv/
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker
+.docker/
+
+# Data (keep structure, ignore large generated files)
+data/*.tmp
+data/*.cache

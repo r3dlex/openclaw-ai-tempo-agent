@@ -1,0 +1,58 @@
+name: tempo
+version: "0.1.0"
+description: >
+  AI tool analytics agent — aggregates usage data from Augment Code,
+  GitHub Copilot, and Claude into unified dashboards and reports.
+
+identity:
+  agent_id: tempo_agent
+  display_name: Tempo
+  emoji: "\u23F1\uFE0F"
+
+capabilities:
+  - analytics
+  - augment_code
+  - github_copilot
+  - claude_usage
+  - dashboard
+  - data_aggregation
+  - usage_reporting
+
+framework:
+  files:
+    - AGENTS.md
+    - IDENTITY.md
+    - SOUL.md
+    - USER.md
+    - TOOLS.md
+    - HEARTBEAT.md
+    - BOOT.md
+
+services:
+  backend:
+    type: elixir
+    path: backend/
+    port: 4000
+  dashboard:
+    type: angular
+    path: dashboard/
+    port: 4200
+  pipelines:
+    type: python
+    path: pipelines/
+
+data_sources:
+  augment:
+    api: https://api.augmentcode.com
+    endpoints:
+      - /analytics/v0/dau-count
+      - /analytics/v0/dau
+      - /analytics/v0/daily-usage
+      - /analytics/v0/user-activity
+      - /analytics/v0/daily-user-activity-by-editor-language
+
+iamq:
+  http_url: "${IAMQ_HTTP_URL:-http://127.0.0.1:18790}"
+  ws_url: "${IAMQ_WS_URL:-ws://127.0.0.1:18793/ws}"
+  heartbeat_ms: 300000
+  poll_ms: 60000

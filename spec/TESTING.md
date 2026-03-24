@@ -10,7 +10,6 @@
 **Framework:** ExUnit
 
 ```bash
-# Local
 cd backend && mix deps.get && mix test
 
 # With coverage
@@ -18,37 +17,51 @@ cd backend && mix test --cover
 ```
 
 Test categories:
-- DataStore GenServer lifecycle and data loading
-- API endpoint responses (analytics, users, status)
-- MqClient registration and heartbeat
-- Data aggregation logic
+- `Tempo.Analytics` computation logic (user stats, daily aggregates)
+- `TempoWeb.AnalyticsController` API endpoint responses
+- `TempoWeb.HealthController` health check
+- `Tempo.DataStore` GenServer lifecycle and data loading
 
-### Dashboard (React)
+### Angular (Dashboard)
 
-**Location:** `dashboard/src/__tests__/` or colocated `*.test.tsx`
-**Framework:** Vitest (or Jest)
+**Location:** `dashboard/src/**/*.spec.ts`
+**Framework:** Karma + Jasmine
 
 ```bash
-# Local
-cd dashboard && npm test
-
-# With coverage
-cd dashboard && npm test -- --coverage
+cd dashboard && npm install && npm test
 ```
 
 Test categories:
 - Component rendering (StatCard, UsageChart, UserTable, TopUsersChart)
-- Data fetching and transformation
-- Chart data formatting
+- AnalyticsService HTTP calls
+- DashboardComponent integration
 
-### Docker (Full Stack)
+### Python (Pipelines)
+
+**Location:** `pipelines/tests/`
+**Framework:** pytest + respx (HTTP mocking)
 
 ```bash
-# Backend tests in Docker
-docker compose run --rm backend mix test
+cd pipelines && poetry install && poetry run pytest
 
-# Dashboard build check
-docker compose run --rm dashboard npm run build
+# With coverage
+cd pipelines && poetry run pytest --cov=tempo_pipelines
+```
+
+Test categories:
+- `AugmentClient` API interactions (mocked with respx)
+- Pipeline execution writes correct output files
+- Error handling for API failures
+
+### Linting
+
+```bash
+# Elixir
+cd backend && mix format --check-formatted
+
+# Python
+cd pipelines && poetry run ruff check .
+cd pipelines && poetry run ruff format --check .
 ```
 
 ## CI (GitHub Actions)
@@ -57,8 +70,9 @@ docker compose run --rm dashboard npm run build
 
 | Job | What it runs |
 |-----|-------------|
-| `elixir` | `mix compile --warnings-as-errors && mix test` |
+| `backend` | `mix compile --warnings-as-errors && mix format --check-formatted && mix test` |
 | `dashboard` | `npm ci && npm run build` |
+| `pipelines` | `ruff check && ruff format --check && pytest` |
 
 CI runs on every push and pull request to `main`.
 
@@ -66,20 +80,29 @@ CI runs on every push and pull request to `main`.
 
 ### For a new Elixir module
 
-1. Create `backend/test/<module_name>_test.exs`
-2. Test public API, error cases, and edge cases
-3. Run: `cd backend && mix test test/<module_name>_test.exs`
+1. Create `backend/test/<path>/<module_name>_test.exs`
+2. `use ExUnit.Case, async: true`
+3. Test public API, error cases, and edge cases
+4. Run: `cd backend && mix test test/<path>/<module_name>_test.exs`
 
-### For a new React component
+### For a new Angular component
 
-1. Create a test file next to the component: `ComponentName.test.tsx`
-2. Test rendering, props, and user interactions
-3. Run: `cd dashboard && npm test`
+1. Create `component-name.component.spec.ts` next to the component
+2. Use `TestBed.configureTestingModule` with standalone component imports
+3. Test rendering, inputs, and user interactions
+4. Run: `cd dashboard && npm test`
+
+### For a new Python pipeline
+
+1. Create `pipelines/tests/test_<source>.py`
+2. Use `@respx.mock` to mock HTTP calls
+3. Test success, failure, and rate-limit scenarios
+4. Run: `cd pipelines && poetry run pytest tests/test_<source>.py`
 
 ## Testing Principles
 
 - **Test isolation.** Each test creates its own fixtures. No shared mutable state.
-- **No secrets in tests.** Use fixture data, never real API tokens.
+- **No secrets in tests.** Use fixture data and mock HTTP, never real API tokens.
 - **Structured results.** Backend tests verify JSON response shapes.
 
 ## Related

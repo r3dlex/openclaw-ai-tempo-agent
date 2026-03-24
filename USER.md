@@ -17,3 +17,5 @@ Build this over time through interactions. This file grows as you learn.)_
 
 The more you know, the better you can help. But you're learning about a person,
 not building a dossier. Respect the difference.
+
+> For privacy rules around user data, see `spec/SAFETY.md`.

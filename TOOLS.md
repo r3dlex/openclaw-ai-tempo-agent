@@ -7,14 +7,15 @@ Skills define _how_ tools work. This file is for _your_ specifics.
 | Service | URL | Purpose |
 |---------|-----|---------|
 | Backend API | `http://localhost:4000` | Elixir/Phoenix data aggregation and API |
-| Dashboard | `http://localhost:4200` | React/Vite analytics visualization |
-| IAMQ | `$IAMQ_HTTP_URL` (default `http://127.0.0.1:18790`) | Inter-agent messaging |
+| Dashboard | `http://localhost:4200` | Angular 19 analytics visualization |
+| IAMQ HTTP | `$IAMQ_HTTP_URL` (default `http://127.0.0.1:18790`) | Inter-agent messaging (HTTP) |
+| IAMQ WS | `$IAMQ_WS_URL` (default `ws://127.0.0.1:18793/ws`) | Inter-agent messaging (WebSocket) |
 
 ## Data Sources
 
 | Source | Type | Config |
 |--------|------|--------|
-| Augment Code | REST API | `AUGMENT_API_KEY`, `AUGMENT_API_URL` in `.env` |
+| Augment Code | REST API | `AUGMENT_API_TOKEN`, `AUGMENT_API_URL` in `.env` |
 | GitHub Copilot | REST API | `COPILOT_API_TOKEN`, `COPILOT_ORG` in `.env` |
 | Claude | REST API | `CLAUDE_API_KEY` in `.env` |
 | Local files | JSON/CSV | `data/` directory |
@@ -53,17 +54,23 @@ curl -X POST http://127.0.0.1:18790/send \
 ## Docker Commands
 
 ```bash
-# Start all services
+# Start all services (backend + dashboard + iamq sidecar)
 docker compose up -d
 
 # Start backend only
 docker compose up -d backend
 
 # Run backend tests
-docker compose exec backend mix test
+cd backend && mix test
 
-# Run pipeline ETL
-docker compose exec backend mix tempo.refresh
+# Run Python pipeline tests
+cd pipelines && poetry run pytest
+
+# Run data pipeline
+./tools/pipeline_runner --pipeline augment --output data/
+
+# Run dashboard dev server
+cd dashboard && npm install && npm start
 
 # View logs
 docker compose logs -f backend
@@ -76,4 +83,9 @@ _(Add local setup details here: custom API endpoints, rate limits, preferred rep
 ---
 
 Keep shared skills and local setup separate. This is your cheat sheet.
-For deeper details: `spec/PIPELINES.md`, `spec/ARCHITECTURE.md`, `spec/TROUBLESHOOTING.md`.
+
+> For deeper details:
+> - System design: `spec/ARCHITECTURE.md`
+> - Data pipelines: `spec/PIPELINES.md`
+> - API endpoints: `spec/API.md`
+> - Troubleshooting: `spec/TROUBLESHOOTING.md`

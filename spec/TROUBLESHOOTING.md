@@ -44,10 +44,11 @@ All API tokens must be configured via environment variables only. Never hardcode
 
 ### Dashboard shows no data
 
-1. Verify the backend is running: `curl http://localhost:4000/status`
-2. Check the API response: `curl http://localhost:4000/api/analytics`
+1. Verify the backend is running: `curl http://localhost:4000/api/v1/health`
+2. Check the API response: `curl http://localhost:4000/api/v1/analytics/augment/summary`
 3. Check browser console for CORS errors — ensure the dashboard origin is allowed
-4. Verify the dashboard `VITE_API_URL` environment variable points to the backend
+4. Verify `proxy.conf.json` routes `/api` to `http://localhost:4000` in Angular dev mode
+5. In production (Docker), nginx handles the `/api` proxy to the backend container
 
 ## IAMQ Integration
 
@@ -78,6 +79,23 @@ The agent sends heartbeats every `IAMQ_HEARTBEAT_MS` (default 60s). If IAMQ mark
 2. Check the sender used the correct `to` field: `tempo_agent`
 3. Verify polling is active: `IAMQ_POLL_MS` (default 30s)
 
+## Python Pipelines
+
+### Pipeline fails with connection error
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `httpx.ConnectError` | API unreachable | Verify `AUGMENT_API_URL` in `.env` and network connectivity |
+| `httpx.HTTPStatusError: 401` | Invalid token | Regenerate `AUGMENT_API_TOKEN` |
+| `httpx.HTTPStatusError: 429` | Rate limited | Pipeline auto-retries after 6s; if persistent, reduce polling frequency |
+
+### Poetry install fails
+
+```bash
+# Clear cache and retry
+cd pipelines && poetry cache clear . --all && poetry install
+```
+
 ## Dashboard Build
 
 ### `npm run build` fails
@@ -86,7 +104,7 @@ The agent sends heartbeats every `IAMQ_HEARTBEAT_MS` (default 60s). If IAMQ mark
 |---|---|---|
 | TypeScript errors | Type mismatches | Fix the type errors shown in the build output |
 | Missing dependencies | `node_modules` out of date | Run `cd dashboard && npm ci` |
-| Vite config error | Invalid `vite.config.ts` | Check Vite docs for correct configuration |
+| Angular config error | Invalid `angular.json` | Check Angular CLI docs for correct configuration |
 
 ## Related
 

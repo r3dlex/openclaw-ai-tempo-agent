@@ -29,13 +29,14 @@ dashboards and reports to the user and hands off analytics to the **Librarian** 
 │   ├── lib/             # Application source
 │   ├── test/            # Elixir tests
 │   └── mix.exs          # Elixir project definition
-├── dashboard/           # React/Vite analytics UI
-│   ├── src/             # React components and pages
+├── dashboard/           # Angular 19 analytics UI
+│   ├── src/             # Angular components, services, and pages
 │   ├── package.json     # Node dependencies
-│   └── vite.config.ts   # Vite configuration
+│   └── angular.json     # Angular CLI configuration
 ├── pipelines/           # Python/Poetry ETL pipelines
 │   ├── pyproject.toml   # Poetry project definition
-│   └── tempo_pipelines/ # Python package
+│   ├── src/tempo_pipelines/ # Python package
+│   └── tests/           # Pipeline tests
 ├── tools/               # CLI tooling
 │   └── pipeline_runner  # CLI for executing pipelines in CI/CD
 ├── data/                # Raw and processed data files
@@ -50,9 +51,10 @@ dashboards and reports to the user and hands off analytics to the **Librarian** 
 │   └── LEARNINGS.md     # Lessons learned over time
 ├── .github/
 │   └── workflows/
-│       └── ci.yml       # GitHub Actions CI pipeline
-├── docker-compose.yml   # Full stack orchestration
-├── Dockerfile           # Zero-install container
+│       ├── ci.yml       # GitHub Actions CI pipeline
+│       └── pipeline.yml # Scheduled data pipeline workflow
+├── docker-compose.yml   # Full stack orchestration (backend + dashboard + iamq)
+├── Dockerfile           # Multi-stage build (backend + dashboard)
 └── LICENSE              # MIT
 ```
 
@@ -102,7 +104,7 @@ cd pipelines && poetry run pytest
 docker compose exec backend mix tempo.refresh
 
 # Run dashboard dev server
-cd dashboard && npm install && npm run dev
+cd dashboard && npm install && npm start
 
 # View backend logs
 docker compose logs -f backend
@@ -133,13 +135,14 @@ curl -X POST http://127.0.0.1:18790/send \
 - Test: `cd backend && mix test`
 - Format: `cd backend && mix format`
 
-## Dashboard (React/Vite)
+## Dashboard (Angular 19)
 
 - Location: `dashboard/`
-- Purpose: Analytics visualization UI
-- Run: `cd dashboard && npm install && npm run dev`
+- Purpose: Analytics visualization UI (standalone components, Chart.js via ng2-charts)
+- Run: `cd dashboard && npm install && npm start`
 - Test: `cd dashboard && npm test`
 - Build: `cd dashboard && npm run build`
+- Proxy: `/api` requests are proxied to `http://localhost:4000` via `proxy.conf.json`
 
 ## Pipelines (Python/Poetry)
 
@@ -153,23 +156,24 @@ curl -X POST http://127.0.0.1:18790/send \
 
 ## Testing & CI
 
-GitHub Actions (`.github/workflows/ci.yml`) runs on every push and PR:
-- Elixir compile + tests
-- Python lint (ruff) + tests (pytest)
-- Dashboard build validation
-- Docker build validation
-- Secrets scan (blocks if hardcoded secrets or local paths found)
+GitHub Actions runs on every push and PR:
+- **ci.yml**: Elixir compile+format+test, Angular build, Python lint (ruff) + test (pytest)
+- **pipeline.yml**: Scheduled daily data pipeline execution via `tools/pipeline_runner`
 
 ## Progressive Disclosure
 
-For deeper topics, see `spec/`:
-- **Architecture & ADRs**: `spec/ARCHITECTURE.md`
-- **Data pipelines**: `spec/PIPELINES.md`
-- **Scheduled tasks**: `spec/CRON.md`
-- **One-shot tasks**: `spec/TASK.md`
-- **Testing**: `spec/TESTING.md`
-- **Troubleshooting**: `spec/TROUBLESHOOTING.md`
-- **Lessons learned**: `spec/LEARNINGS.md`
+Don't read everything upfront. Load context on demand from `spec/`:
+
+| When you need | Read |
+|---------------|------|
+| System design, supervision tree, data flow | `spec/ARCHITECTURE.md` |
+| Pipeline details, scheduling, Augment API endpoints | `spec/PIPELINES.md` |
+| Phoenix API routes and response shapes | `spec/API.md` |
+| Agent-to-agent IAMQ messaging | `spec/COMMUNICATION.md` |
+| Security, privacy, rate limits | `spec/SAFETY.md` |
+| How to run and write tests | `spec/TESTING.md` |
+| Something is broken | `spec/TROUBLESHOOTING.md` |
+| Past decisions and context | `spec/LEARNINGS.md` |
 
 ## Sensitive Data Policy
 
@@ -183,7 +187,7 @@ For deeper topics, see `spec/`:
 ## Conventions
 
 - Elixir: Follow standard mix format, use doctests
-- React: Functional components, hooks, TypeScript
+- Angular: Standalone components, Angular style guide, TypeScript strict mode
 - Python: PEP 8 via ruff, type hints required, Poetry for deps
 - All code must have tests
 - Use environment variables for secrets (never commit them)
