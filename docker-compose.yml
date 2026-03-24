@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${TEMPO_PORT:-4000}:4000"
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${DASHBOARD_PORT:-4200}:80"
+    depends_on:
+      - backend
+
+  iamq:
+    image: openclaw-iamq-sidecar:latest
+    restart: unless-stopped
+    environment:
+      IAMQ_HTTP_URL: http://host.docker.internal:18790
+      IAMQ_WS_URL: ws://host.docker.internal:18793/ws
+      IAMQ_AGENT_ID: tempo_agent
+      IAMQ_AGENT_NAME: Tempo
+      IAMQ_AGENT_EMOJI: "\u23F1\uFE0F"
+      IAMQ_AGENT_DESC: "AI tool analytics — aggregates usage from Augment Code, GitHub Copilot, and Claude"
+      IAMQ_AGENT_CAPABILITIES: analytics,augment_code,github_copilot,claude_usage,dashboard,data_aggregation,usage_reporting
+      IAMQ_HEARTBEAT_MS: "300000"
+      IAMQ_POLL_MS: "60000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
