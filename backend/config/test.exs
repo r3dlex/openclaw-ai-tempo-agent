@@ -12,4 +12,6 @@ config :tempo, :augment,
   api_url: "http://localhost:8081",
   api_token: "test_token"
 
+config :tempo, :start_mq_clients, false
+
 config :logger, level: :warning

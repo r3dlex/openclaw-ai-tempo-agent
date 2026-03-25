@@ -5,14 +5,21 @@ defmodule Tempo.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
+    base_children = [
       TempoWeb.Telemetry,
       {Phoenix.PubSub, name: Tempo.PubSub},
-      Tempo.MqClient,
-      Tempo.MqWsClient,
       Tempo.DataStore,
       TempoWeb.Endpoint
     ]
+
+    mq_children =
+      if Application.get_env(:tempo, :start_mq_clients, true) do
+        [Tempo.MqClient, Tempo.MqWsClient]
+      else
+        []
+      end
+
+    children = base_children ++ mq_children
 
     opts = [strategy: :one_for_one, name: Tempo.Supervisor]
     Supervisor.start_link(children, opts)
