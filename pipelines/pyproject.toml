@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "Data ingestion pipelines for Openclaw AI Tempo Agent"
 authors = ["Redlex Gilgamesh"]
 license = "MIT"
-readme = "README.md"
 packages = [{include = "tempo_pipelines", from = "src"}]
 
 [tool.poetry.dependencies]

@@ -172,10 +172,18 @@ defmodule Tempo.MqClient do
       agent_id: agent_id,
       name: System.get_env("IAMQ_AGENT_NAME", "Tempo"),
       emoji: System.get_env("IAMQ_AGENT_EMOJI", "\u{23F1}\uFE0F"),
-      description: System.get_env("IAMQ_AGENT_DESC",
-        "AI tool analytics \u2014 aggregates usage data from Augment Code, GitHub Copilot, and Claude into unified dashboards"),
-      capabilities: parse_caps(System.get_env("IAMQ_AGENT_CAPABILITIES",
-        "analytics,augment_code,github_copilot,claude_usage,dashboard,data_aggregation,usage_reporting")),
+      description:
+        System.get_env(
+          "IAMQ_AGENT_DESC",
+          "AI tool analytics \u2014 aggregates usage data from Augment Code, GitHub Copilot, and Claude into unified dashboards"
+        ),
+      capabilities:
+        parse_caps(
+          System.get_env(
+            "IAMQ_AGENT_CAPABILITIES",
+            "analytics,augment_code,github_copilot,claude_usage,dashboard,data_aggregation,usage_reporting"
+          )
+        ),
       workspace: File.cwd!()
     }
 
@@ -198,10 +206,17 @@ defmodule Tempo.MqClient do
     %{url: url, agent_id: agent_id} = config
 
     case Req.get("#{url}/inbox/#{agent_id}", params: [status: status], receive_timeout: 5_000) do
-      {:ok, %{status: 200, body: %{"messages" => messages}}} -> {:ok, messages}
-      {:ok, %{status: 200, body: body}} when is_list(body) -> {:ok, body}
-      {:ok, %{status: status_code, body: body}} -> {:error, "HTTP #{status_code}: #{inspect(body)}"}
-      {:error, reason} -> {:error, reason}
+      {:ok, %{status: 200, body: %{"messages" => messages}}} ->
+        {:ok, messages}
+
+      {:ok, %{status: 200, body: body}} when is_list(body) ->
+        {:ok, body}
+
+      {:ok, %{status: status_code, body: body}} ->
+        {:error, "HTTP #{status_code}: #{inspect(body)}"}
+
+      {:error, reason} ->
+        {:error, reason}
     end
   end
 
@@ -229,7 +244,10 @@ defmodule Tempo.MqClient do
   defp do_ack(config, message_id, new_status) do
     %{url: url} = config
 
-    case Req.patch("#{url}/messages/#{message_id}", json: %{status: new_status}, receive_timeout: 5_000) do
+    case Req.patch("#{url}/messages/#{message_id}",
+           json: %{status: new_status},
+           receive_timeout: 5_000
+         ) do
       {:ok, %{status: status}} when status in [200, 204] -> :ok
       {:ok, %{status: status, body: body}} -> {:error, "HTTP #{status}: #{inspect(body)}"}
       {:error, reason} -> {:error, reason}
@@ -305,6 +323,7 @@ defmodule Tempo.MqClient do
   defp schedule_poll(ms), do: Process.send_after(self(), :poll_inbox, ms)
 
   defp parse_int(nil, default), do: default
+
   defp parse_int(str, default) do
     case Integer.parse(str) do
       {val, _} -> val

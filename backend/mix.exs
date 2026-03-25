@@ -35,7 +35,7 @@ defmodule Tempo.MixProject do
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.4"},
-      {:plug_cowboy, "~> 2.7"},
+      {:bandit, "~> 1.6"},
       {:cors_plug, "~> 3.0"},
       {:req, "~> 0.5"},
       {:websockex, "~> 0.5"},

@@ -5,7 +5,8 @@ config :tempo, TempoWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "dev_only_secret_key_base_that_is_long_enough_for_phoenix_requirements_64chars",
+  secret_key_base:
+    "dev_only_secret_key_base_that_is_long_enough_for_phoenix_requirements_64chars",
   watchers: []
 
 config :tempo, :data_dir, Path.expand("../../data", __DIR__)

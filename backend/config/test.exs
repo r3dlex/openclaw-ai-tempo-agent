@@ -2,7 +2,8 @@ import Config
 
 config :tempo, TempoWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "test_only_secret_key_base_that_is_long_enough_for_phoenix_requirements_64chars",
+  secret_key_base:
+    "test_only_secret_key_base_that_is_long_enough_for_phoenix_requirements_64chars",
   server: false
 
 config :tempo, :data_dir, Path.expand("../../data", __DIR__)
