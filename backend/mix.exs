@@ -10,6 +10,7 @@ defmodule Tempo.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      test_coverage: [summary: [threshold: 10]],
       name: "Tempo",
       description: "Openclaw AI Tempo Agent - Multi-source AI tool analytics"
     ]
