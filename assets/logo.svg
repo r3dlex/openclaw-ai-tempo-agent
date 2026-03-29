@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Outer circle (watch body) -->
+  <circle cx="64" cy="68" r="44" fill="none" stroke="#6C5CE7" stroke-width="8"/>
+  <!-- Crown/button at top -->
+  <rect x="58" y="14" width="12" height="12" rx="3" ry="3" fill="#6C5CE7"/>
+  <!-- Tick marks -->
+  <line x1="64" y1="32" x2="64" y2="40" stroke="#6C5CE7" stroke-width="4" stroke-linecap="round"/>
+  <line x1="64" y1="96" x2="64" y2="104" stroke="#6C5CE7" stroke-width="4" stroke-linecap="round"/>
+  <line x1="28" y1="68" x2="36" y2="68" stroke="#6C5CE7" stroke-width="4" stroke-linecap="round"/>
+  <line x1="92" y1="68" x2="100" y2="68" stroke="#6C5CE7" stroke-width="4" stroke-linecap="round"/>
+  <!-- Clock hand pointing up-right -->
+  <line x1="64" y1="68" x2="86" y2="46" stroke="#6C5CE7" stroke-width="7" stroke-linecap="round"/>
+  <!-- Center dot -->
+  <circle cx="64" cy="68" r="5" fill="#6C5CE7"/>
+</svg>

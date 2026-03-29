@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" alt="Tempo logo" width="96" height="96">
+</p>
+
 # Openclaw AI Tempo Agent
 
 Tempo is an autonomous Openclaw agent that connects multiple AI tool data sources to provide comprehensive, fine-grained usage analytics. It collects, aggregates, and visualizes data from Augment Code, GitHub Copilot, and Claude into unified dashboards and reports.
