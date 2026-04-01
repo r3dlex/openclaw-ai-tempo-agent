@@ -1,6 +1,5 @@
 """Tests for pipeline configuration."""
 
-
 from tempo_pipelines.config import AugmentConfig, PipelineConfig
 
 
