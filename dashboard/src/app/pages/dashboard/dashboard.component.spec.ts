@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -57,6 +58,7 @@ describe('DashboardComponent', () => {
       providers: [
         { provide: AnalyticsService, useValue: spy },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     analyticsService = TestBed.inject(AnalyticsService) as jasmine.SpyObj<AnalyticsService>;
