@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Body (just head area) -->
+  <ellipse cx="64" cy="72" rx="30" ry="30" fill="#E8453C"/>
+  <ellipse cx="64" cy="76" rx="20" ry="20" fill="#F4A39C"/>
+  <!-- Left Claw -->
+  <path d="M36 60 Q22 44 18 36 Q16 30 22 28" fill="#E8453C"/>
+  <ellipse cx="18" cy="28" rx="11" ry="8" fill="#E8453C" transform="rotate(-15 18 28)"/>
+  <path d="M12 24 Q8 17 14 15 Q18 14 18 20" fill="#E8453C"/>
+  <path d="M22 22 Q26 15 22 13 Q18 12 18 20" fill="#E8453C"/>
+  <!-- Right Claw -->
+  <path d="M92 60 Q106 44 110 36 Q112 30 106 28" fill="#E8453C"/>
+  <ellipse cx="110" cy="28" rx="11" ry="8" fill="#E8453C" transform="rotate(15 110 28)"/>
+  <path d="M116 24 Q120 17 114 15 Q110 14 110 20" fill="#E8453C"/>
+  <path d="M106 22 Q102 15 106 13 Q110 12 110 20" fill="#E8453C"/>
+  <!-- Antennae -->
+  <path d="M52 44 Q46 28 40 16" stroke="#E8453C" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="39" cy="14" r="3.5" fill="#E8453C"/>
+  <path d="M76 44 Q82 28 88 16" stroke="#E8453C" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="89" cy="14" r="3.5" fill="#E8453C"/>
+  <!-- Eyes -->
+  <circle cx="52" cy="60" r="11" fill="white"/>
+  <circle cx="76" cy="60" r="11" fill="white"/>
+  <circle cx="54" cy="59" r="5.5" fill="#2C3E50"/>
+  <circle cx="78" cy="59" r="5.5" fill="#2C3E50"/>
+  <circle cx="56" cy="57" r="2.5" fill="white"/>
+  <circle cx="80" cy="57" r="2.5" fill="white"/>
+  <!-- Smile -->
+  <path d="M54 74 Q64 82 74 74" stroke="#2C3E50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>

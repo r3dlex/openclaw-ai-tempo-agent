@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="Tempo logo" width="96" height="96">
+  <img src="assets/banner.svg" alt="openclaw-ai-tempo-agent" width="600">
 </p>
 
 # Openclaw AI Tempo Agent

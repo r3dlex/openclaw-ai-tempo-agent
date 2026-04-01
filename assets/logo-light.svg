@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <!-- Tail -->
-  <ellipse cx="64" cy="108" rx="10" ry="6" fill="#E8453C" />
-  <ellipse cx="64" cy="114" rx="7" ry="4" fill="#E8453C" />
-  <path d="M57 114 Q64 122 71 114" fill="#E8453C" />
+  <ellipse cx="64" cy="108" rx="10" ry="6" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
+  <ellipse cx="64" cy="114" rx="7" ry="4" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
+  <path d="M57 114 Q64 122 71 114" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
   <!-- Body -->
-  <ellipse cx="64" cy="76" rx="26" ry="32" fill="#E8453C" />
+  <ellipse cx="64" cy="76" rx="26" ry="32" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
   <!-- Belly -->
   <ellipse cx="64" cy="80" rx="18" ry="22" fill="#F4A39C"/>
   <!-- Left Leg nubs -->
@@ -14,17 +14,17 @@
   <ellipse cx="86" cy="85" rx="5" ry="3" fill="#E8453C" transform="rotate(20 86 85)"/>
   <ellipse cx="88" cy="75" rx="5" ry="3" fill="#E8453C" transform="rotate(15 88 75)"/>
   <!-- Left Arm -->
-  <path d="M42 65 Q30 50 24 38 Q20 30 26 28 Q32 26 35 32 Q38 38 36 48 L42 58" fill="#E8453C" />
+  <path d="M42 65 Q30 50 24 38 Q20 30 26 28 Q32 26 35 32 Q38 38 36 48 L42 58" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
   <!-- Left Claw -->
-  <ellipse cx="22" cy="26" rx="10" ry="7" fill="#E8453C"  transform="rotate(-15 22 26)"/>
-  <path d="M16 22 Q12 16 18 14 Q22 13 22 18" fill="#E8453C" />
-  <path d="M26 20 Q30 14 26 12 Q22 11 22 18" fill="#E8453C" />
+  <ellipse cx="22" cy="26" rx="10" ry="7" fill="#E8453C" stroke="#C0392B" stroke-width="1.5" transform="rotate(-15 22 26)"/>
+  <path d="M16 22 Q12 16 18 14 Q22 13 22 18" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
+  <path d="M26 20 Q30 14 26 12 Q22 11 22 18" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
   <!-- Right Arm -->
-  <path d="M86 65 Q98 50 104 38 Q108 30 102 28 Q96 26 93 32 Q90 38 92 48 L86 58" fill="#E8453C" />
+  <path d="M86 65 Q98 50 104 38 Q108 30 102 28 Q96 26 93 32 Q90 38 92 48 L86 58" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
   <!-- Right Claw -->
-  <ellipse cx="106" cy="26" rx="10" ry="7" fill="#E8453C"  transform="rotate(15 106 26)"/>
-  <path d="M112 22 Q116 16 110 14 Q106 13 106 18" fill="#E8453C" />
-  <path d="M102 20 Q98 14 102 12 Q106 11 106 18" fill="#E8453C" />
+  <ellipse cx="106" cy="26" rx="10" ry="7" fill="#E8453C" stroke="#C0392B" stroke-width="1.5" transform="rotate(15 106 26)"/>
+  <path d="M112 22 Q116 16 110 14 Q106 13 106 18" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
+  <path d="M102 20 Q98 14 102 12 Q106 11 106 18" fill="#E8453C" stroke="#C0392B" stroke-width="1.5"/>
   <!-- Antennae -->
   <path d="M56 46 Q50 30 44 18" stroke="#E8453C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
   <circle cx="43" cy="16" r="3" fill="#E8453C"/>
