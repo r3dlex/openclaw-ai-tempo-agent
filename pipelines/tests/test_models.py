@@ -1,6 +1,6 @@
 """Tests for data models."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from tempo_pipelines.models import (
     DailyUsage,
@@ -14,8 +14,8 @@ from tempo_pipelines.models import (
 
 def test_date_range_model() -> None:
     dr = DateRange(
-        start_date=datetime(2025, 11, 24, tzinfo=timezone.utc),
-        end_date=datetime(2025, 11, 25, tzinfo=timezone.utc),
+        start_date=datetime(2025, 11, 24, tzinfo=UTC),
+        end_date=datetime(2025, 11, 25, tzinfo=UTC),
     )
     assert dr.start_date.year == 2025
 
@@ -23,8 +23,8 @@ def test_date_range_model() -> None:
 def test_usage_record_model() -> None:
     record = UsageRecord(
         date_range=DateRange(
-            start_date=datetime(2025, 11, 24, tzinfo=timezone.utc),
-            end_date=datetime(2025, 11, 25, tzinfo=timezone.utc),
+            start_date=datetime(2025, 11, 24, tzinfo=UTC),
+            end_date=datetime(2025, 11, 25, tzinfo=UTC),
         ),
         credits_consumed=500,
         group_key="alice@example.com",
@@ -79,7 +79,7 @@ def test_pipeline_result_success() -> None:
         source="augment",
         records_processed=10,
         output_file="/tmp/augment_data.json",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         success=True,
     )
     assert result.success is True
@@ -92,7 +92,7 @@ def test_pipeline_result_failure() -> None:
         source="augment",
         records_processed=0,
         output_file="/tmp/augment_data.json",
-        timestamp=datetime.now(tz=timezone.utc),
+        timestamp=datetime.now(tz=UTC),
         success=False,
         error="Connection refused",
     )

@@ -88,7 +88,6 @@ def test_run_unknown_pipeline_else_branch(tmp_path: Path) -> None:
 
 def test_main_module_entrypoint() -> None:
     """Verify __main__.py can be imported without crashing at module level."""
-    import importlib
     import subprocess
     import sys
 
