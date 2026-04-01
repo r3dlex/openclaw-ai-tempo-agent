@@ -74,8 +74,6 @@ def test_run_main_run_help() -> None:
 
 def test_run_unknown_pipeline_else_branch(tmp_path: Path) -> None:
     """The else branch for unknown pipeline is reachable via callback invocation."""
-    import sys
-
     from tempo_pipelines.cli import run
 
     runner = CliRunner()
@@ -83,7 +81,7 @@ def test_run_unknown_pipeline_else_branch(tmp_path: Path) -> None:
     with runner.isolated_filesystem():
         try:
             run.callback(pipeline="unknown_source", output=str(tmp_path))  # type: ignore[attr-defined]
-            assert False, "Should have raised SystemExit"
+            raise AssertionError("Should have raised SystemExit")
         except SystemExit as exc:
             assert exc.code == 1
 

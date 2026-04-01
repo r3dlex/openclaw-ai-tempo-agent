@@ -53,7 +53,10 @@ defmodule Tempo.AnalyticsTest do
     end
 
     test "handles numeric credits" do
-      data = [%{"date" => "2025-11-24", "creditsConsumed" => 500, "email" => "charlie@example.com"}]
+      data = [
+        %{"date" => "2025-11-24", "creditsConsumed" => 500, "email" => "charlie@example.com"}
+      ]
+
       stats = Analytics.compute_user_stats(data)
       assert length(stats) == 1
       charlie = hd(stats)
@@ -153,7 +156,10 @@ defmodule Tempo.AnalyticsTest do
     end
 
     test "handles date key format" do
-      data = [%{"date" => "2025-12-01T00:00:00Z", "creditsConsumed" => 50, "email" => "f@example.com"}]
+      data = [
+        %{"date" => "2025-12-01T00:00:00Z", "creditsConsumed" => 50, "email" => "f@example.com"}
+      ]
+
       [day] = Analytics.compute_daily_aggregates(data)
       assert day.date == "2025-12-01"
     end

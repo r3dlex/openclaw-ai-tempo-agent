@@ -1,8 +1,5 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { UsageChartComponent } from './usage-chart.component';
 import { DailyAggregate } from '../../models/analytics.model';
-import { MockModule } from 'ng-mocks';
-import { BaseChartDirective } from 'ng2-charts';
 
 const mockData: DailyAggregate[] = [
   { date: '2025-11-24', total_credits: 5000, user_count: 2 },

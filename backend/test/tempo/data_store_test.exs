@@ -67,9 +67,7 @@ defmodule Tempo.DataStoreTest do
     test "returns empty list when file not found" do
       # Start a separate DataStore with a non-existent data dir
       {:ok, pid} =
-        GenServer.start_link(Tempo.DataStore, %{},
-          name: nil
-        )
+        GenServer.start_link(Tempo.DataStore, %{}, name: nil)
 
       # Override config for this process test by sending call directly
       result = GenServer.call(pid, {:get_data, :augment})
