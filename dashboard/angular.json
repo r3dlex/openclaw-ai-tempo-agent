@@ -54,7 +54,10 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [{ "glob": "**/*", "input": "public" }],
             "styles": ["src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "codeCoverage": true,
+            "codeCoverageExclude": [],
+            "karmaConfig": "karma.conf.js"
           }
         }
       }

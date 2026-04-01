@@ -20,6 +20,7 @@ pytest-asyncio = "^0.24.0"
 ruff = "^0.8.0"
 mypy = "^1.13.0"
 respx = "^0.22.0"
+pytest-cov = "^7.1.0"
 
 [tool.poetry.scripts]
 tempo-pipeline = "tempo_pipelines.cli:main"
@@ -43,6 +44,18 @@ warn_unused_configs = true
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+addopts = "--cov=tempo_pipelines --cov-report=term-missing --cov-fail-under=90"
+
+[tool.coverage.run]
+source = ["tempo_pipelines"]
+omit = ["*/tempo_pipelines/__main__.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise SystemExit",
+]
 
 [build-system]
 requires = ["poetry-core"]
