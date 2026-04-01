@@ -38,7 +38,7 @@ jobs:
       - run: mix deps.get
       - run: mix compile --warnings-as-errors
       - run: mix format --check-formatted
-      - run: mix test
+      - run: mix test --cover
 
   dashboard:
     name: Dashboard (Angular)
@@ -55,6 +55,10 @@ jobs:
           cache-dependency-path: dashboard/package-lock.json
       - run: npm ci
       - run: npm run build
+      - name: Run tests with coverage
+        run: npm test -- --browsers=ChromeHeadlessCI --code-coverage --watch=false
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
 
   pipelines:
     name: Pipelines (Python)

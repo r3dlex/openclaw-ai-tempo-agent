@@ -10,7 +10,16 @@ defmodule Tempo.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      test_coverage: [summary: [threshold: 10]],
+      test_coverage: [
+        summary: [threshold: 90],
+        ignore_modules: [
+          Tempo.MqClient,
+          Tempo.MqWsClient,
+          Tempo.Sources.Augment,
+          TempoWeb,
+          TempoWeb.Endpoint
+        ]
+      ],
       name: "Tempo",
       description: "Openclaw AI Tempo Agent - Multi-source AI tool analytics"
     ]
