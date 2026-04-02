@@ -13,6 +13,11 @@ backend/_build/
 backend/deps/
 backend/cover/
 backend/.elixir_ls/
+doc/
+.lexical/
+priv/plts/
+*.plt
+*.plt.hash
 
 # Angular / Node
 node_modules/
