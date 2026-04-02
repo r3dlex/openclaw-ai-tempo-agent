@@ -10,6 +10,17 @@ defmodule Tempo.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      name: "TempoBackend",
+      source_url: "https://github.com/r3dlex/openclaw-ai-tempo-agent",
+      description: "Openclaw AI Tempo Agent - Multi-source AI tool analytics",
+      docs: [
+        main: "readme",
+        extras:
+          if(File.exists?("../README.md"), do: ["../README.md"], else: []) ++
+            if(File.exists?("spec"), do: Path.wildcard("spec/*.md"), else: []),
+        output: "doc/",
+        formatters: ["html"]
+      ],
       test_coverage: [
         summary: [threshold: 90],
         ignore_modules: [
@@ -19,9 +30,7 @@ defmodule Tempo.MixProject do
           TempoWeb,
           TempoWeb.Endpoint
         ]
-      ],
-      name: "Tempo",
-      description: "Openclaw AI Tempo Agent - Multi-source AI tool analytics"
+      ]
     ]
   end
 
@@ -50,7 +59,8 @@ defmodule Tempo.MixProject do
       {:req, "~> 0.5"},
       {:websockex, "~> 0.5"},
       {:nimble_csv, "~> 1.2"},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
     ]
   end
 
