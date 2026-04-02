@@ -93,5 +93,13 @@ The agent must never fail its core analytics function because IAMQ is down.
 - API: [API.md](API.md)
 - Safety rules for data in messages: [SAFETY.md](SAFETY.md)
 
+## References
+
+- [IAMQ HTTP API](https://github.com/r3dlex/openclaw-inter-agent-message-queue/blob/main/spec/API.md)
+- [IAMQ WebSocket Protocol](https://github.com/r3dlex/openclaw-inter-agent-message-queue/blob/main/spec/PROTOCOL.md)
+- [IAMQ Cron Scheduling](https://github.com/r3dlex/openclaw-inter-agent-message-queue/blob/main/spec/CRON.md)
+- [Sidecar Client](https://github.com/r3dlex/openclaw-inter-agent-message-queue/tree/main/sidecar)
+- [openclaw-main-agent](https://github.com/r3dlex/openclaw-main-agent)
+
 ---
 *Owner: tempo_agent*

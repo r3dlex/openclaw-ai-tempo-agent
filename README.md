@@ -102,6 +102,14 @@ Tempo registers as `tempo_agent` on the Openclaw Inter-Agent Message Queue. The 
 | `SOUL.md` | Tempo Agent (runtime) | Personality and protocols |
 | `spec/` | Both | Architecture, API, pipelines, testing, safety |
 
+## Related
+
+- [openclaw-inter-agent-message-queue](https://github.com/r3dlex/openclaw-inter-agent-message-queue) — IAMQ: message bus, agent registry, and cron scheduler
+  - [HTTP API reference](https://github.com/r3dlex/openclaw-inter-agent-message-queue/blob/main/spec/API.md)
+  - [Cron subsystem](https://github.com/r3dlex/openclaw-inter-agent-message-queue/blob/main/spec/CRON.md)
+  - [Sidecar client](https://github.com/r3dlex/openclaw-inter-agent-message-queue/tree/main/sidecar)
+- [openclaw-main-agent](https://github.com/r3dlex/openclaw-main-agent) — Cross-agent pipeline orchestrator
+
 ## License
 
 MIT -- Copyright 2026 Redlex Gilgamesh
