@@ -1,4 +1,12 @@
 defmodule TempoWeb.Telemetry do
+  @moduledoc """
+  Telemetry supervisor for the Tempo backend.
+
+  Starts a `:telemetry_poller` that periodically emits VM metrics and
+  defines the set of Phoenix/endpoint metrics exported to
+  `Phoenix.LiveDashboard` and any attached reporters.
+  """
+
   use Supervisor
   import Telemetry.Metrics
 
@@ -15,6 +23,7 @@ defmodule TempoWeb.Telemetry do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
+  @doc "Returns the list of Telemetry metrics to be reported."
   def metrics do
     [
       summary("phoenix.endpoint.start.system_time", unit: {:native, :millisecond}),

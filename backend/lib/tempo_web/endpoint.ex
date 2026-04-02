@@ -1,4 +1,12 @@
 defmodule TempoWeb.Endpoint do
+  @moduledoc """
+  Phoenix Endpoint for the Tempo backend.
+
+  Configures static file serving, request parsing, session management,
+  CORS (allowing the Angular dashboard on ports 4200 and 4000), and
+  routes all requests through `TempoWeb.Router`.
+  """
+
   use Phoenix.Endpoint, otp_app: :tempo
 
   @session_options [

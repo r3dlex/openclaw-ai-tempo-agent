@@ -1,4 +1,12 @@
 defmodule TempoWeb.AnalyticsController do
+  @moduledoc """
+  Phoenix controller for analytics endpoints.
+
+  Exposes per-source analytics data: user statistics, daily aggregates,
+  raw records, and a summary rollup. All endpoints require a `source`
+  path parameter; currently only `"augment"` is supported.
+  """
+
   use TempoWeb, :controller
 
   alias Tempo.DataStore
