@@ -14,6 +14,9 @@ on:
     # Run daily at 03:00 UTC (after Augment data availability at ~02:00 UTC)
     - cron: "0 3 * * *"
 
+permissions:
+  contents: write
+
 jobs:
   run-pipeline:
     name: Execute Pipeline
@@ -21,14 +24,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check secrets
+        id: check
+        env:
+          AUGMENT_API_URL: ${{ secrets.AUGMENT_API_URL }}
+          AUGMENT_API_TOKEN: ${{ secrets.AUGMENT_API_TOKEN }}
+        run: |
+          if [ -z "$AUGMENT_API_URL" ] || [ -z "$AUGMENT_API_TOKEN" ]; then
+            echo "::warning::AUGMENT_API_URL or AUGMENT_API_TOKEN secret is not configured — skipping pipeline."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.check.outputs.skip == 'false'
         with:
           python-version: "3.12"
 
       - name: Install Poetry
+        if: steps.check.outputs.skip == 'false'
         run: pip install poetry
 
       - name: Run pipeline
+        if: steps.check.outputs.skip == 'false'
         env:
           AUGMENT_API_URL: ${{ secrets.AUGMENT_API_URL }}
           AUGMENT_API_TOKEN: ${{ secrets.AUGMENT_API_TOKEN }}
@@ -38,6 +57,7 @@ jobs:
             --output data/
 
       - name: Commit updated data
+        if: steps.check.outputs.skip == 'false'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
