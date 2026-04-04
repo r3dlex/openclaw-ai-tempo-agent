@@ -86,8 +86,7 @@ are announced to the queue automatically.
 | Workday | `workday_agent` | Work scheduling and tracking |
 | Git Repo | `gitrepo_agent` | Repository management |
 | Sysadmin | `sysadmin_agent` | System administration |
-| Health & Fitness | `health_fitness` | Health tracking |
-| Archivist | `archivist_agent` | Long-term archival |
+| Health & Fitness | `health_fitness_agent` | Health tracking |
 | Claude Agent | `agent_claude` | General-purpose Claude agent |
 
 **How to use the IAMQ:**

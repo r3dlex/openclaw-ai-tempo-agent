@@ -8,23 +8,24 @@ and development conventions. Read this before working on any OpenClaw agent repo
 
 ## Ecosystem Overview
 
-OpenClaw is a system of **13 autonomous agents** that communicate via IAMQ:
+OpenClaw is a system of **14 autonomous agents** that communicate via IAMQ:
 
 | Agent ID | Repo | Purpose |
 |---|---|---|
-| `iamq` | `openclaw-inter-agent-message-queue` | Central message bus + cron scheduler |
-| `claude_agent` | `openclaw-agent-claude` | Claude AI assistant, executes tasks via Claude API |
+| `mq_agent` | `openclaw-inter-agent-message-queue` | Central message bus + cron scheduler |
+| `agent_claude` | `openclaw-agent-claude` | Claude AI assistant, executes tasks via Claude API |
 | `tempo_agent` | `openclaw-ai-tempo-agent` | AI tool usage analytics (Augment, Copilot, Claude) |
 | `gitrepo_agent` | `openclaw-gitrepo-agent` | Monitors git repos for activity, stale PRs, stats |
-| `health_agent` | `openclaw-health-fitness` | Imports step/sleep data, generates fitness reports |
+| `health_fitness_agent` | `openclaw-health-fitness` | Imports step/sleep data, generates fitness reports |
 | `instagram_agent` | `openclaw-instagram-agent` | Instagram engagement automation |
 | `journalist_agent` | `openclaw-journalist-agent` | News briefings and digests from RSS/web sources |
 | `librarian_agent` | `openclaw-librarian-agent` | Indexes and organizes Obsidian vault + Atlassian |
 | `mail_agent` | `openclaw-mail-agent` | Email tidy, digest, calendar via Himalaya/DavMail |
-| `main_agent` | `openclaw-main-agent` | Cross-agent pipeline orchestration |
+| `main` | `openclaw-main-agent` | Cross-agent pipeline orchestration |
 | `podcast_agent` | `openclaw-podcast-agent` | Monitors RSS feeds, downloads new episodes |
 | `sysadmin_agent` | `openclaw-sysadmin-agent` | Security audits, health checks, system monitoring |
 | `workday_agent` | `openclaw-workday-agent` | Workday HR automation via browser (timesheet, tasks) |
+| `herr_freud_agent` | `openclaw-herr-freud-agent` | Psychology/therapy session assistant |
 
 All agents are **standalone repos** — independently deployable, no shared runtime.
 
@@ -265,12 +266,13 @@ def poll_inbox():
 | `journalist_agent` | `evening_digest` | `0 18 * * *` | Evening summary daily |
 | `mail_agent` | `tidy_inbox` | `30 6 * * *` | Tidy inbox daily 06:30 UTC |
 | `mail_agent` | `digest` | `0 7 * * *` | Generate digest daily 07:00 UTC |
-| `health_agent` | `import_steps` | `0 23 * * *` | Import Health Connect data |
-| `health_agent` | `weekly_report` | `0 8 * * 1` | Weekly fitness report Monday |
+| `health_fitness_agent` | `import_steps` | `0 23 * * *` | Import Health Connect data |
+| `health_fitness_agent` | `weekly_report` | `0 8 * * 1` | Weekly fitness report Monday |
 | `tempo_agent` | `augment_pipeline` | `0 2 * * *` | Augment data pipeline 02:00 UTC |
 | `sysadmin_agent` | `security_audit` | `0 3 * * *` | Security scan 03:00 UTC |
 | `sysadmin_agent` | `health_check` | `*/15 * * * *` | Health check every 15 min |
 | `workday_agent` | `timesheet_sync` | `30 17 * * 1-5` | Timesheet sync 17:30 Mon–Fri |
+| `herr_freud_agent` | `openclaw-herr-freud-agent` | Psychology/therapy session assistant |
 | `librarian_agent` | `reindex_vault` | `0 4 * * *` | Reindex Obsidian vault 04:00 UTC |
 | `gitrepo_agent` | `repo_scan` | `0 1 * * *` | Repository scan 01:00 UTC |
 | `instagram_agent` | `engage_morning` | `0 9 * * *` | Morning engagement 09:00 UTC |
