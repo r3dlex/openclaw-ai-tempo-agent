@@ -4,27 +4,38 @@
 
 # Openclaw AI Tempo Agent
 
-Tempo is an autonomous Openclaw agent that connects multiple AI tool data sources to provide comprehensive, fine-grained usage analytics. It collects, aggregates, and visualizes data from Augment Code, GitHub Copilot, and Claude into unified dashboards and reports.
+Tempo is an autonomous Openclaw agent that connects multiple AI tool data sources to provide comprehensive, fine-grained usage analytics. It collects, aggregates, and visualizes data from Augment Code, GitHub Copilot, and Claude into unified dashboards and reports, then hands off analytics to the Librarian agent for archival.
 
-## Supported Data Sources
+## Features
 
-| Source | Data Collected | Status |
-|--------|---------------|--------|
-| **Augment Code** | Credits, DAU, user activity, model/token usage, editor/language breakdown | Active |
-| **GitHub Copilot** | Completions, chat usage, lines suggested/accepted, seat management | Planned |
-| **Claude** | Conversations, tokens, model usage | Planned |
+- Collects usage data from Augment Code (credits, DAU, model/token usage, editor/language breakdown)
+- GitHub Copilot and Claude usage support (planned)
+- Phoenix/Elixir backend API with Angular 19 dashboard
+- Daily data pipelines via GitHub Actions
+- Registers as `tempo_agent` on IAMQ for inter-agent messaging
+
+## Skills
+
+| Skill | Description |
+|-------|-------------|
+| `usage_metrics_collect` | Triggers a data collection run and reports aggregated metrics to IAMQ |
+
+Skills are stored in `skills/` and auto-improve via post-execution hooks and nightly batch processing. Workspace-level skills (`iamq_message_send`, `log_learning`, `improve_skill`) are available via the shared `../skills` volume.
 
 ## Architecture
 
-| Component | Technology | Location | Port |
-|-----------|-----------|----------|------|
-| Backend API | Elixir / Phoenix | `backend/` | 4000 |
-| Dashboard | Angular 19 | `dashboard/` | 4200 |
-| Data Pipelines | Python / Poetry | `pipelines/` | -- |
-| Pipeline Runner | Shell CLI | `tools/pipeline_runner` | -- |
-| IAMQ Client | Elixir (built into backend) | `backend/lib/tempo/mq_*.ex` | -- |
+- **Language**: Elixir/Phoenix (backend), Angular 19 (dashboard), Python/Poetry (pipelines)
+- **IAMQ ID**: `tempo_agent`
+- **Runtime**: Docker
+- **Ports**: `4001` (API), `4200` (dashboard)
 
-## Quick Start (Zero Install)
+| Component | Technology | Port |
+|-----------|-----------|------|
+| Backend API | Elixir / Phoenix | 4001 |
+| Dashboard | Angular 19 | 4200 |
+| Data Pipelines | Python / Poetry | — |
+
+## Setup
 
 ```bash
 cp .env.example .env
@@ -32,48 +43,17 @@ cp .env.example .env
 docker compose up
 ```
 
-This starts:
-- Backend API at `http://localhost:4000`
-- Dashboard at `http://localhost:4200`
-- IAMQ sidecar for inter-agent messaging
+## Volume Mounts
 
-## Development Setup
+| Mount | Purpose |
+|-------|---------|
+| `../skills-cli:/skills-cli:ro` | Shared skills CLI tooling |
+| `../skills:/workspace/skills:rw` | Workspace-level shared skills |
+| `./skills:/agent/skills:rw` | Agent-specific skills |
 
-### Backend (Elixir)
-
-```bash
-cd backend
-mix deps.get
-mix phx.server
-```
-
-### Dashboard (Angular)
-
-```bash
-cd dashboard
-npm install
-npm start
-```
-
-### Pipelines (Python)
-
-```bash
-cd pipelines
-poetry install
-poetry run tempo-pipeline run --pipeline augment --output ../data/
-```
-
-## Data Pipelines
-
-Pipelines ingest data from AI tool APIs and write normalized JSON to `data/`. Run via GitHub Actions (daily at 03:00 UTC) or locally:
-
-```bash
-./tools/pipeline_runner --pipeline augment --output data/
-```
+`EMBEDDINGS_URL=http://host.docker.internal:18795` is set automatically for semantic search.
 
 ## API Endpoints
-
-All under `/api/v1/`:
 
 | Endpoint | Description |
 |----------|-------------|
@@ -82,34 +62,12 @@ All under `/api/v1/`:
 | `GET /api/v1/analytics/:source/summary` | High-level metrics |
 | `GET /api/v1/analytics/:source/users` | Per-user statistics |
 | `GET /api/v1/analytics/:source/daily` | Daily aggregates |
-| `GET /api/v1/analytics/:source/raw` | Raw data (first 100 records) |
 
-## Inter-Agent Messaging (IAMQ)
+## Links
 
-Tempo registers as `tempo_agent` on the Openclaw Inter-Agent Message Queue. The backend handles registration, heartbeats, inbox polling (HTTP), and real-time push (WebSocket) automatically.
-
-## CI/CD
-
-- **ci.yml** -- Runs on push/PR: Elixir compile+format+test, Angular build, Python lint+test
-- **pipeline.yml** -- Scheduled daily data pipeline with auto-commit of results
-
-## Project Documentation
-
-| File | Audience | Purpose |
-|------|----------|---------|
-| `CLAUDE.md` | Developers / Claude Code | Build, test, improve the agent |
-| `AGENTS.md` | Tempo Agent (runtime) | Operational framework |
-| `SOUL.md` | Tempo Agent (runtime) | Personality and protocols |
-| `spec/` | Both | Architecture, API, pipelines, testing, safety |
-
-## Related
-
-- [openclaw-inter-agent-message-queue](https://github.com/r3dlex/openclaw-inter-agent-message-queue) — IAMQ: message bus, agent registry, and cron scheduler
-  - [HTTP API reference](https://github.com/r3dlex/openclaw-inter-agent-message-queue/blob/main/spec/API.md)
-  - [Cron subsystem](https://github.com/r3dlex/openclaw-inter-agent-message-queue/blob/main/spec/CRON.md)
-  - [Sidecar client](https://github.com/r3dlex/openclaw-inter-agent-message-queue/tree/main/sidecar)
-- [openclaw-main-agent](https://github.com/r3dlex/openclaw-main-agent) — Cross-agent pipeline orchestrator
+- [openclaw-inter-agent-message-queue](https://github.com/r3dlex/openclaw-inter-agent-message-queue) — IAMQ backbone
+- [openclaw-main-agent](https://github.com/r3dlex/openclaw-main-agent) — Cross-agent orchestrator
 
 ## License
 
-MIT -- Copyright 2026 Redlex Gilgamesh
+MIT — Copyright 2026 Redlex Gilgamesh
