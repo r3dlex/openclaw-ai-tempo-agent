@@ -60,3 +60,4 @@ Thumbs.db
 # Data (keep structure, ignore large generated files)
 data/*.tmp
 data/*.cache
+.coverage
