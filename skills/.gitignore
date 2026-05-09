@@ -1,0 +1,3 @@
+*.lock
+*.tmp
+.rate_limit/

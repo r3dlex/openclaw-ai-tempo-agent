@@ -25,7 +25,7 @@ RUN mix compile && mix release
 FROM debian:bookworm-slim AS runtime
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates libstdc++6 openssl libncurses6 locales && \
+    apt-get install -y --no-install-recommends ca-certificates libstdc++6 openssl libncurses6 locales python3 && \
     rm -rf /var/lib/apt/lists/* && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 

@@ -1,0 +1,14 @@
+{
+  "name": "usage_metrics_collect",
+  "version": 1,
+  "quality_score": 0.5,
+  "description": "Collect AI tool usage metrics for the specified period",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "period": {"type": "string", "description": "Time period to collect metrics for"},
+      "metric_type": {"type": "string", "description": "Type of metric to collect"}
+    },
+    "required": ["period", "metric_type"]
+  }
+}

@@ -8,6 +8,12 @@ services:
       - "${TEMPO_PORT:-4000}:4000"
     env_file:
       - .env
+    environment:
+      - EMBEDDINGS_URL=http://host.docker.internal:18795
+    volumes:
+      - ../skills-cli:/skills-cli:ro
+      - ../skills:/workspace/skills:rw
+      - ./skills:/agent/skills:rw
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -20,6 +26,12 @@ services:
       - "${DASHBOARD_PORT:-4200}:80"
     depends_on:
       - backend
+    environment:
+      - EMBEDDINGS_URL=http://host.docker.internal:18795
+    volumes:
+      - ../skills-cli:/skills-cli:ro
+      - ../skills:/workspace/skills:rw
+      - ./skills:/agent/skills:rw
 
   iamq:
     image: openclaw-iamq-sidecar:latest
